@@ -1,7 +1,9 @@
 package com.hammerox.recyclerviewtut;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +53,16 @@ public class ContactsAdapter
         Contact contact = mContacts.get(position);
 
         holder.mTextView.setText(contact.getName());
-        holder.mButton.setText("Message");
+
+        if (contact.isOnline()) {
+            holder.mButton.setText("Message");
+            holder.mButton.setClickable(true);
+            holder.mButton.setTextColor(Color.BLACK);
+        } else {
+            holder.mButton.setText("Offline");
+            holder.mButton.setClickable(false);
+            holder.mButton.setTextColor(Color.GRAY);
+        }
     }
 
 
