@@ -1,6 +1,7 @@
 package com.hammerox.recyclerviewtut;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,8 +11,11 @@ public class MainActivity extends AppCompatActivity {
 
     private final static String KEY_CURRENT_TAG = "CURRENT_TAG";
     private final static String TAG_FRAG_VERT_LIST = "TAG_FRAG_VERT_LIST";
+    private final static String TAG_FRAG_GRID = "TAG_FRAG_GRID";
 
     FragmentVerticalList fragmentVerticalList;
+    FragmentGrid fragmentGrid;
+
     String currentTag;
 
     @Override
@@ -23,20 +27,21 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
 
-            createFragments();
-            fragment = fragmentVerticalList;
+            fragment = getVerticalList();
             currentTag = TAG_FRAG_VERT_LIST;
 
         } else {
 
-            recreateFragments();
             currentTag = savedInstanceState.getString(KEY_CURRENT_TAG);
             switch (currentTag) {
                 case TAG_FRAG_VERT_LIST:
-                    fragment = fragmentVerticalList;
+                    fragment = getVerticalList();
+                    break;
+                case TAG_FRAG_GRID:
+                    fragment = getGrid();
                     break;
                 default:
-                    fragment = fragmentVerticalList;
+                    fragment = getVerticalList();
                     break;
             }
 
@@ -59,11 +64,15 @@ public class MainActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.item_vertical_list:
-                fragment = fragmentVerticalList;
+                fragment = getVerticalList();
                 currentTag = TAG_FRAG_VERT_LIST;
                 break;
+            case R.id.item_grid:
+                fragment = getGrid();
+                currentTag = TAG_FRAG_GRID;
+                break;
             default:
-                fragment = fragmentVerticalList;
+                fragment = getVerticalList();
                 currentTag = TAG_FRAG_VERT_LIST;
                 break;
         }
@@ -79,18 +88,28 @@ public class MainActivity extends AppCompatActivity {
         outState.putString(KEY_CURRENT_TAG, currentTag);
     }
 
-    public void createFragments() {
-        fragmentVerticalList = new FragmentVerticalList();
+    public FragmentVerticalList getVerticalList() {
+        FragmentManager fm = getSupportFragmentManager();
+
+        fragmentVerticalList = (FragmentVerticalList) fm.findFragmentByTag(TAG_FRAG_VERT_LIST);
+        if (fragmentVerticalList == null) fragmentVerticalList = new FragmentVerticalList();
+
+        return fragmentVerticalList;
     }
 
-    public void recreateFragments() {
-        fragmentVerticalList = (FragmentVerticalList) getSupportFragmentManager()
-                .findFragmentByTag(TAG_FRAG_VERT_LIST);
+    public FragmentGrid getGrid() {
+        FragmentManager fm = getSupportFragmentManager();
+
+        fragmentGrid = (FragmentGrid) fm.findFragmentByTag(TAG_FRAG_GRID);
+        if (fragmentGrid == null) fragmentGrid = new FragmentGrid();
+
+        return fragmentGrid;
     }
 
     public void replaceFragment(Fragment fragment, String tag) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.activity_main, fragment, tag)
+                .addToBackStack(null)
                 .commit();
     }
 }

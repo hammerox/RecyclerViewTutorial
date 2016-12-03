@@ -2,6 +2,7 @@ package com.hammerox.recyclerviewtut;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,12 +34,8 @@ public class FragmentVerticalList extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_vertical_list, container, false);
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rv_contacts);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
             contacts = Contact.createContactList(20);
@@ -48,6 +45,15 @@ public class FragmentVerticalList extends Fragment {
             Type type = new TypeToken<ArrayList<Contact>>() {}.getType();
             contacts = gson.fromJson(jsonToLoad, type);
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_vertical_list, container, false);
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rv_contacts);
 
         ContactsAdapter adapter = new ContactsAdapter(getContext(), contacts);
         recyclerView.setAdapter(adapter);
@@ -62,5 +68,15 @@ public class FragmentVerticalList extends Fragment {
 
         String jsonToSave = gson.toJson(contacts);
         outState.putString(KEY_CONTACTS, jsonToSave);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }
