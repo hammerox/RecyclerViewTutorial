@@ -1,51 +1,29 @@
 package com.hammerox.recyclerviewtut;
 
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final static String KEY_CONTACTS = "KEY_CONTACTS";
+    private final static String TAG_FRAG_VERT_LIST = "TAG_FRAG_VERT_LIST";
 
-    Gson gson = new Gson();
-    ArrayList<Contact> contacts;
+    FragmentVerticalList fragmentVerticalList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_contacts);
-
         if (savedInstanceState == null) {
-            contacts = Contact.createContactList(20);
+
+            fragmentVerticalList = new FragmentVerticalList();
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.activity_main, fragmentVerticalList, TAG_FRAG_VERT_LIST)
+                    .commit();
         } else {
-            String jsonToLoad = savedInstanceState.getString(KEY_CONTACTS);
-
-            Type type = new TypeToken<ArrayList<Contact>>() {}.getType();
-            contacts = gson.fromJson(jsonToLoad, type);
+            fragmentVerticalList = (FragmentVerticalList) getSupportFragmentManager()
+                    .findFragmentByTag(TAG_FRAG_VERT_LIST);
         }
-
-
-        ContactsAdapter adapter = new ContactsAdapter(this, contacts);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        String jsonToSave = gson.toJson(contacts);
-        outState.putString(KEY_CONTACTS, jsonToSave);
     }
 }

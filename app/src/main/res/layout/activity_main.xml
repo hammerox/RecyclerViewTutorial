@@ -5,12 +5,6 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="12dp"
     tools:context="com.hammerox.recyclerviewtut.MainActivity">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_contacts"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 
 </RelativeLayout>
