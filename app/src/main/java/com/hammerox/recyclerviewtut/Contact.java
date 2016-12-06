@@ -24,9 +24,10 @@ public class Contact {
         return mOnline;
     }
 
-    private static int lastContact = 0;
-
     public static ArrayList<Contact> createContactList(int numContacts) {
+
+        int lastContact = 0;
+
         ArrayList<Contact> contacts = new ArrayList<>();
 
         for (int i = 1; i <= numContacts ; i++) {

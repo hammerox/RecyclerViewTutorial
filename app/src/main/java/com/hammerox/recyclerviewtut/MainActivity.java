@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
     public void replaceFragment(Fragment fragment, String tag) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.activity_main, fragment, tag)
-                .addToBackStack(null)
                 .commit();
     }
 }
