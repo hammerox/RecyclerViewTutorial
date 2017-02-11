@@ -12,9 +12,11 @@ public class MainActivity extends AppCompatActivity {
     private final static String KEY_CURRENT_TAG = "CURRENT_TAG";
     private final static String TAG_FRAG_VERT_LIST = "TAG_FRAG_VERT_LIST";
     private final static String TAG_FRAG_GRID = "TAG_FRAG_GRID";
+    private final static String TAG_FRAG_INFINITE = "TAG_FRAG_INFINITE";
 
     FragmentVerticalList fragmentVerticalList;
     FragmentGrid fragmentGrid;
+    FragmentInfinite fragmentInfinite;
 
     String currentTag;
 
@@ -39,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case TAG_FRAG_GRID:
                     fragment = getGrid();
+                    break;
+                case TAG_FRAG_INFINITE:
+                    fragment = getInfinite();
                     break;
                 default:
                     fragment = getVerticalList();
@@ -70,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.item_grid:
                 fragment = getGrid();
                 currentTag = TAG_FRAG_GRID;
+                break;
+            case R.id.item_infinite:
+                fragment = getInfinite();
+                currentTag = TAG_FRAG_INFINITE;
                 break;
             default:
                 fragment = getVerticalList();
@@ -104,6 +113,15 @@ public class MainActivity extends AppCompatActivity {
         if (fragmentGrid == null) fragmentGrid = new FragmentGrid();
 
         return fragmentGrid;
+    }
+
+    public FragmentInfinite getInfinite() {
+        FragmentManager fm = getSupportFragmentManager();
+
+        fragmentInfinite = (FragmentInfinite) fm.findFragmentByTag(TAG_FRAG_INFINITE);
+        if (fragmentInfinite == null) fragmentInfinite = new FragmentInfinite();
+
+        return fragmentInfinite;
     }
 
     public void replaceFragment(Fragment fragment, String tag) {

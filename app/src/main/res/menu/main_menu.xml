@@ -7,4 +7,7 @@
     <item android:id="@+id/item_grid"
           android:title="Grid"
           app:showAsAction="never"/>
+    <item android:id="@+id/item_infinite"
+          android:title="Infinite"
+          app:showAsAction="never"/>
 </menu>
