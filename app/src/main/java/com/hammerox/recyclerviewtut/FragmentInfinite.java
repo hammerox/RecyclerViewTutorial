@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -19,7 +20,10 @@ import java.util.List;
 public class FragmentInfinite extends Fragment {
 
     private RecyclerView recyclerView;
+    private InfiniteAdapter adapter;
+    private LinearLayoutManager manager;
     private List<Contact> contactList;
+    private Random random = new Random();
 
 
     public FragmentInfinite() {
@@ -39,9 +43,22 @@ public class FragmentInfinite extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_infinite, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.rv_infinite);
-        InfiniteAdapter adapter = new InfiniteAdapter(contactList, getContext());
+
+        adapter = new InfiniteAdapter(contactList, getContext());
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        manager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(manager);
+
+        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(manager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                String name = "Created " + current_page;
+                boolean online = random.nextBoolean();
+                contactList.add(new Contact(name, online));
+                adapter.notifyDataSetChanged();
+            }
+        });
 
         return view;
     }
